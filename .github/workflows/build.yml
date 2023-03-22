@@ -21,6 +21,7 @@ jobs:
     name: Deploy(Production)
     needs: deploy-dev
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - uses: actions/checkout@v2
-      - run: echo 'production deployment'
+      - run: echo 'production deployment -- ${{ vars.test }}'
