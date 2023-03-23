@@ -1,7 +1,9 @@
 name: Deployment
 on:
-  push:
   workflow_dispatch:
+
+env:
+  ARTIFACT_FILENAME: mint#${{ github.ref_name }}#${{ github.sha }}.zip
 
 jobs:
   test:
@@ -9,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: echo 'run tests'
+      - run: echo 'run tests -- ${{ env.ARTIFACT_FILENAME }}'
 
   deploy-dev:
     name: Deploy(Dev)
@@ -19,6 +21,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: echo 'dev deployment  -- ${{ vars.test }}'
+      - run: echo 'ENV_FILENAME - ${{ vars.ENV_FILENAME }}'
+      - run: echo 'AWS_CODEDEPLOY_DEPLOY_GROUP - ${{ vars.AWS_CODEDEPLOY_DEPLOY_GROUP }}'
 
   deploy-production:
     name: Deploy(Production)
@@ -26,5 +30,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
-      - uses: actions/checkout@v2
       - run: echo 'production deployment -- ${{ vars.test }}'
+      - run: echo 'ENV_FILENAME - ${{ vars.ENV_FILENAME }}'
+      - run: echo 'AWS_CODEDEPLOY_DEPLOY_GROUP - ${{ vars.AWS_CODEDEPLOY_DEPLOY_GROUP }}'
